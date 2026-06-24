@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FitTrack Pro - Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-fire"></i>
+                <span>FitTrack Pro</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#" class="active" data-tab="dashboard">Dashboard</a></li>
+                <li><a href="#" data-tab="log">Log Entry</a></li>
+                <li><a href="#" data-tab="analytics">Analytics</a></li>
+                <li><a href="#" data-tab="ai">AI Coach</a></li>
+            </ul>
+            <div class="nav-right">
+                <span id="userNameDisplay" style="color:#b0b8c8;font-size:0.9rem;margin-right:15px;"></span>
+                <button id="logoutBtn" style="background:transparent;border:1px solid #2a3450;color:#b0b8c8;padding:6px 14px;border-radius:8px;cursor:pointer;">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+                <div class="nav-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Dashboard Tab -->
+        <section id="dashboard" class="tab-content active">
+            <div class="welcome-section">
+                <h1>Welcome back, <span id="userName">Athlete</span>! 👋</h1>
+                <p>Here's your progress summary</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #4CAF50;">
+                        <i class="fas fa-weight-scale"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Current Weight</h3>
+                        <p class="stat-value" id="currentWeight">-- kg</p>
+                        <span class="stat-change" id="weightChange">0 kg lost</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #FF9800;">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Goal Progress</h3>
+                        <p class="stat-value" id="goalProgress">0%</p>
+                        <span class="stat-change" id="goalRemaining">-- kg to go</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #2196F3;">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Days Tracking</h3>
+                        <p class="stat-value" id="daysTracking">0</p>
+                        <span class="stat-change">Keep going!</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #9C27B0;">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Avg Loss/Week</h3>
+                        <p class="stat-value" id="avgLoss">0 kg</p>
+                        <span class="stat-change" id="paceStatus">On track</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3><i class="fas fa-chart-line"></i> Weight Progress</h3>
+                        <button class="btn-small" id="resetChart">Reset</button>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="weightChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3><i class="fas fa-tachometer-alt"></i> Weekly Trend</h3>
+                        <span class="badge" id="trendBadge">Stable</span>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Entries -->
+            <div class="recent-section">
+                <h3><i class="fas fa-clock"></i> Recent Entries</h3>
+                <div id="recentEntries">
+                    <p class="empty-state">No entries yet. Start tracking today!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Log Entry Tab -->
+        <section id="log" class="tab-content">
+            <div class="log-container">
+                <h2><i class="fas fa-pen"></i> Log Daily Progress</h2>
+                <form id="logForm">
+                    <div class="form-group">
+                        <label for="logDate">Date</label>
+                        <input type="date" id="logDate" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="logWeight">Weight (kg)</label>
+                        <input type="number" id="logWeight" step="0.1" min="30" max="300" placeholder="e.g., 75.5" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="logCalories">Calories Consumed</label>
+                        <input type="number" id="logCalories" step="10" placeholder="e.g., 2386" />
+                    </div>
+                    <div class="form-group">
+                        <label for="logProtein">Protein (g)</label>
+                        <input type="number" id="logProtein" step="1" placeholder="e.g., 176" />
+                    </div>
+                    <div class="form-group">
+                        <label for="logCarbs">Carbs (g)</label>
+                        <input type="number" id="logCarbs" step="1" placeholder="e.g., 239" />
+                    </div>
+                    <div class="form-group">
+                        <label for="logFat">Fat (g)</label>
+                        <input type="number" id="logFat" step="1" placeholder="e.g., 80" />
+                    </div>
+                    <div class="form-group">
+                        <label for="logWorkout">Workout</label>
+                        <select id="logWorkout">
+                            <option value="rest">Rest</option>
+                            <option value="cardio">Cardio</option>
+                            <option value="strength">Strength</option>
+                            <option value="both">Both</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="logMood">Mood</label>
+                        <select id="logMood">
+                            <option value="neutral">Neutral</option>
+                            <option value="great">Great</option>
+                            <option value="good">Good</option>
+                            <option value="bad">Bad</option>
+                            <option value="terrible">Terrible</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="logNotes">Notes (optional)</label>
+                        <textarea id="logNotes" rows="3" placeholder="How did you feel today? Any challenges?"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Save Entry
+                    </button>
+                </form>
+                <div class="form-actions">
+                    <button class="btn-secondary" id="clearAllData">
+                        <i class="fas fa-trash"></i> Clear All Data
+                    </button>
+                    <button class="btn-secondary" id="exportData">
+                        <i class="fas fa-download"></i> Export Data
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Tab -->
+        <section id="analytics" class="tab-content">
+            <h2><i class="fas fa-chart-pie"></i> Advanced Analytics</h2>
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <h4>Weight Loss Trend</h4>
+                    <div class="chart-wrapper">
+                        <canvas id="analyticsWeightChart"></canvas>
+                    </div>
+                </div>
+                <div class="analytics-card">
+                    <h4>Calorie Intake</h4>
+                    <div class="chart-wrapper">
+                        <canvas id="calorieChart"></canvas>
+                    </div>
+                </div>
+                <div class="analytics-card">
+                    <h4>Macronutrient Distribution</h4>
+                    <div class="chart-wrapper">
+                        <canvas id="macroChart"></canvas>
+                    </div>
+                </div>
+                <div class="analytics-card">
+                    <h4>Weekly Summary</h4>
+                    <div id="weeklySummary">
+                        <p>Log more data to see insights!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Coach Tab -->
+        <section id="ai" class="tab-content">
+            <div class="ai-container">
+                <div class="ai-header">
+                    <i class="fas fa-robot" style="font-size: 2.5rem; color: #4CAF50;"></i>
+                    <h2>AI Nutrition Coach</h2>
+                    <p>Ask me anything about your diet, progress, or get personalized advice</p>
+                </div>
+                <div class="chat-container">
+                    <div id="chatMessages">
+                        <div class="message bot">
+                            <div class="message-content">
+                                Hello! I'm your AI nutrition coach. I can help you with:
+                                <ul>
+                                    <li>Diet adjustments based on your progress</li>
+                                    <li>Meal suggestions and substitutions</li>
+                                    <li>Answering nutrition questions</li>
+                                    <li>Motivation and accountability tips</li>
+                                </ul>
+                                <p>What would you like to know?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <input type="text" id="chatInput" placeholder="Ask your nutrition coach..." />
+                        <button id="sendMessage"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+                <div class="quick-questions">
+                    <button class="quick-btn" data-question="How much water should I drink?">💧 Hydration</button>
+                    <button class="quick-btn" data-question="Give me a high protein meal suggestion">🍗 Meal Ideas</button>
+                    <button class="quick-btn" data-question="Why am I not losing weight?">🤔 Plateau Help</button>
+                    <button class="quick-btn" data-question="What supplements should I take?">💊 Supplements</button>
+                    <button class="quick-btn" data-question="Motivate me!">💪 Motivation</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 FitTrack Pro | Your fat loss journey, visualized.</p>
+    </footer>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
