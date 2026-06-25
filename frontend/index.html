@@ -398,9 +398,9 @@
                 <input type="password" id="loginPassword" placeholder="Enter your password" required />
                 <a href="#" class="forgot-link" id="forgotPasswordLink">Forgot Password?</a>
             </div>
-            <button type="submit" class="btn-primary">
+            <button type="submit" class="btn-primary" id="loginBtn">
                 <span class="loading-spinner" id="loginSpinner"></span>
-                <span id="loginBtnText">Login</span>
+                 <span id="loginBtnText">Login</span>
             </button>
             <div style="text-align: center; margin: 15px 0; color: #4a5670;">or</div>
             <div class="social-login">
@@ -440,7 +440,7 @@
                     </select>
                 </div>
             </div>
-            <button type="submit" class="btn-primary">
+           <button type="submit" class="btn-primary" id="signupBtn">
                 <span class="loading-spinner" id="signupSpinner"></span>
                 <span id="signupBtnText">Create Account</span>
             </button>
@@ -497,7 +497,7 @@
         // ============================================================
 
         // Configuration
-        const API_URL = 'https://fatloss.onrender.com/api'; // Update this to your backend URL
+        const API_URL = 'https://fatloss.onrender.com'; // Update this to your backend URL
 
         // DOM Elements
         const tabs = document.querySelectorAll('.auth-tabs button');
