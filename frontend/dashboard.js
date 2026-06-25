@@ -2,7 +2,7 @@
 // DASHBOARD.JS - Complete Dashboard Logic
 // ============================================================
 
-const API_URL = 'https://fatloss.onrender.com';
+const API_URL = 'https://fatloss.onrender.com/api';
 
 // ---------- STATE ----------
 const state = {
